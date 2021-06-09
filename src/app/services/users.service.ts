@@ -120,20 +120,12 @@ export class UsersService {
    * 
    * Ajout Utilisateur
    */
-  CheckUser(data) {
-    const body=JSON.stringify(data);
-    const headers = { 'content-type': 'application/json'}
-    this.httpClient.post<any>(environment.apiUrl + '/login', body,{'headers':headers} ).subscribe({
-      next: data => {
-        sessionStorage.setItem('token',data['token']);
-        window.location.reload();
-      },
-      error: error => {
-          console.error('There was an error!', error);
+       CheckUser(data) {
+        const body=JSON.stringify(data);
+        const headers = { 'content-type': 'application/json'}
+        return this.httpClient.post<any>(environment.apiUrl + '/login', body,{'headers':headers} );
+    
       }
-  });
-
-  }
 
 
     /**

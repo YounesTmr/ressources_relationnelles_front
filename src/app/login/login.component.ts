@@ -66,7 +66,15 @@ export class LoginComponent implements OnInit {
    * Connexion d'un utilisateur
    */
   checkUser(){
-    this.userService.CheckUser(this.connexionForm.value);
+    this.userService.CheckUser(this.connexionForm.value).subscribe({
+      next: data => {
+        sessionStorage.setItem('token',data['token']);
+        window.location.reload();
+      },
+      error: error => {
+        document.getElementById('errorMdpId').innerHTML="Identifiant ou mot de passe incorrecte";
+      }
+  });
   }
 
     /**
@@ -74,6 +82,12 @@ export class LoginComponent implements OnInit {
    * Ajout d'un utilisateur
    */
   addUser(){
+    var name = document.forms[1]["pseudo"];         
+    if (name.value == ""){ 
+        document.getElementById('errorname').innerHTML="Veuillez entrez un nom valide";  
+        name.focus(); 
+        return false; 
+    }
     if(this.creationForm.get('password').value != this.creationForm.get('cpassword').value){
       this.notGoodPassword = true;
     }else{
@@ -89,4 +103,49 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  validatePseudo(){ 
+    var name = document.forms[1]["pseudo"];         
+    if (name.value.length < 5){ 
+        document.getElementById('errorPseudo').innerHTML="votre pseudo doit faire minimum 5 caractères";  
+        name.focus(); 
+        return false; 
+    }else{
+        document.getElementById('errorPseudo').innerHTML="";  
+    }
+  }
+
+  validateMail(){ 
+    var name = document.forms[1]["mail"]; 
+    var tst = new RegExp(name.pattern);   
+    if (!tst.test(name.value)){ 
+        document.getElementById('errorMail').innerHTML="veuillez entrez un email valide";  
+        name.focus(); 
+        return false; 
+    }else{
+        document.getElementById('errorMail').innerHTML="";  
+    }
+  }
+
+  validatePassword(){ 
+    var name = document.forms[1]["password"];
+    var tst = new RegExp(name.pattern);
+    if (!tst.test(name.value) ){ 
+        document.getElementById('errorPassword').innerHTML="Doit contenir 1 majuscule, 1 minuscule, 1 chiffre et un total de 8 charactere minimum";  
+        name.focus(); 
+        return false; 
+    }else{
+        document.getElementById('errorPassword').innerHTML="";  
+    }
+  }
+
+  validateConfirmation(){ 
+    var name = document.forms[1]["confirmation"];   
+    if (name.value !== document.forms[1]["password"].value){ 
+        document.getElementById('errorConfirmation').innerHTML="veuillez entrer les mêmes mot de passe";  
+        name.focus(); 
+        return false; 
+    }else{
+        document.getElementById('errorConfirmation').innerHTML="";  
+    }
+  }
 }
