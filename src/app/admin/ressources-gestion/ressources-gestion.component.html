@@ -1,0 +1,158 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin</li>
+      <li class="breadcrumb-item active" aria-current="page">Gestion des ressources</li>
+    </ol>
+  </nav>
+<section class="d-flex flex-wrap">
+  <h2 class="text-center w-100">Gestion des catégories</h2>
+
+  <div class="col-12 d-flex my-3" *ngIf="allLangue != undefined">
+    <form [formGroup]="typeFormDelete" (ngSubmit)="deleteOneType('Language')" class="col-12 col-lg-6 d-flex align-items-center p-0">
+      <div class="input-group">
+        <label class="input-group-text" for="inputGroupSelect01">Langue</label>
+        <select class="form-select col-9" id="inputGroupSelect01" formControlName="name">
+          <option selected>Choisir</option>
+          <option *ngFor="let item of allLangue; let id = index;" value="{{ id }}">{{ item["name"] }}</option>
+        </select>
+      </div>
+      <div class="d-flex align-items-center">
+        <button *ngIf="refreshPage" class="btn btn-success" (click)="refresh()"><fa-icon [icon]="faSyncAlt"></fa-icon></button>
+        <button *ngIf="!refreshPage"class="btn btn-danger" type="submit">Supprimer</button>
+      </div>
+    </form>
+    <form class="col-12 col-lg-6 d-flex align-items-center mx-1 p-0 my-2" [formGroup]="GestionFormAdd" (ngSubmit)="addStatusChoose('Languages')">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Ajouter une langue" formControlName="name">
+      </div>
+      <div class="d-flex align-items-center">
+      <button class="btn btn-primary" type="submit" [disabled]="GestionFormAdd.invalid">Ajouter</button>
+    </div>
+    </form>
+  </div>
+
+
+    <div class="col-12 d-flex my-3" *ngIf="allFiles != undefined">
+      <form [formGroup]="typeFormDelete" (ngSubmit)="deleteOneType('FileType')" class="col-12 col-lg-6 d-flex align-items-center p-0">
+        <div class="input-group">
+          <label class="input-group-text" for="inputGroupSelect02">Fichiers</label>
+          <select class="form-select col-9" id="inputGroupSelect02" formControlName="name">
+            <option selected>Choisir</option>
+            <option *ngFor="let item of allFiles; let id = index;" value="{{ id }}">{{ item["name"] }}</option>
+          </select>
+        </div>
+        <div class="d-flex align-items-center">
+          <button *ngIf="refreshPage" class="btn btn-success" (click)="refresh()"><fa-icon [icon]="faSyncAlt"></fa-icon></button>
+          <button *ngIf="!refreshPage"class="btn btn-danger" type="submit">Supprimer</button>
+        </div>
+      </form>
+      <form class="col-12 col-lg-6 d-flex align-items-center mx-1 p-0 my-2" [formGroup]="GestionFormAdd" (ngSubmit)="addStatusChoose('FileTypes')">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Ajouter un type de fichier" formControlName="name">
+        </div>
+        <div class="d-flex align-items-center">
+        <button class="btn btn-primary" type="submit" [disabled]="GestionFormAdd.invalid">Ajouter</button>
+      </div>
+      </form>
+    </div>
+
+
+  <div class="col-12 d-flex my-3" *ngIf="allRelation != undefined">
+    <form [formGroup]="typeFormDelete" (ngSubmit)="deleteOneType('RelationshipType')" class="col-12 col-lg-6 d-flex align-items-center p-0">
+      <div class="input-group">
+        <label class="input-group-text" for="inputGroupSelect03">Relation</label>
+        <select class="form-select col-9" id="inputGroupSelect03" formControlName="name">
+          <option selected>Choisir</option>
+          <option *ngFor="let item of allRelation; let id = index;" value="{{ id }}">{{ item["name"] }}</option>
+        </select>
+      </div>
+      <div class="d-flex align-items-center">
+        <button *ngIf="refreshPage" class="btn btn-success" (click)="refresh()"><fa-icon [icon]="faSyncAlt"></fa-icon></button>
+        <button *ngIf="!refreshPage"class="btn btn-danger" type="submit">Supprimer</button>
+      </div>
+    </form>
+    <form class="col-12 col-lg-6 d-flex align-items-center mx-1 p-0 my-2" [formGroup]="GestionFormAdd" (ngSubmit)="addStatusChoose('RelationshipTypes')">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Ajouter un type de relation" formControlName="name">
+      </div>
+      <div class="d-flex align-items-center">
+      <button class="btn btn-primary" type="submit" [disabled]="GestionFormAdd.invalid">Ajouter</button>
+    </div>
+    </form>
+  </div>
+
+
+<div class="col-12 d-flex my-3" *ngIf="allCategorie != undefined">
+  <form [formGroup]="typeFormDelete" (ngSubmit)="deleteOneType('ResourceCategory')" class="col-12 col-lg-6 d-flex align-items-center p-0">
+    <div class="input-group">
+      <label class="input-group-text" for="inputGroupSelect04">Catégorie</label>
+      <select class="form-select col-8" id="inputGroupSelect04" formControlName="name">
+        <option selected>Choisir</option>
+        <option *ngFor="let item of allCategorie; let id = index;" value="{{ id }}">{{ item["name"] }}</option>
+      </select>
+    </div>
+    <div class="d-flex align-items-center">
+      <button *ngIf="refreshPage" class="btn btn-success" (click)="refresh()"><fa-icon [icon]="faSyncAlt"></fa-icon></button>
+      <button *ngIf="!refreshPage"class="btn btn-danger" type="submit">Supprimer</button>
+    </div>
+  </form>
+  <form class="col-12 col-lg-6 d-flex align-items-center mx-1 p-0 my-2" [formGroup]="GestionFormAdd" (ngSubmit)="addStatusChoose('ResourceCategories')">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Ajouter une catégorie de ressource" formControlName="name">
+    </div>
+    <div class="d-flex align-items-center">
+    <button class="btn btn-primary" type="submit" [disabled]="GestionFormAdd.invalid">Ajouter</button>
+  </div>
+  </form>
+</div>
+
+
+<div class="col-12 d-flex my-3" *ngIf="allType != undefined">
+  <form [formGroup]="typeFormDelete" (ngSubmit)="deleteOneType('ResourceType')" class="col-12 col-lg-6 d-flex align-items-center p-0">
+    <div class="input-group">
+      <label class="input-group-text" for="inputGroupSelect05">Type</label>
+      <select class="form-select col-9" id="inputGroupSelect05" formControlName="name">
+        <option selected>Choisir</option>
+        <option *ngFor="let item of allType; let id = index;" value="{{ id }}">{{ item["name"] }}</option>
+      </select>
+    </div>
+    <div class="d-flex align-items-center">
+      <button *ngIf="refreshPage" class="btn btn-success" (click)="refresh()"><fa-icon [icon]="faSyncAlt"></fa-icon></button>
+      <button *ngIf="!refreshPage"class="btn btn-danger" type="submit">Supprimer</button>
+    </div>
+  </form>
+  <form class="col-12 col-lg-6 d-flex align-items-center mx-1 p-0 my-2" [formGroup]="GestionFormAdd" (ngSubmit)="addStatusChoose('ResourceTypes')">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Ajouter un type de ressource" formControlName="name">
+    </div>
+    <div class="d-flex align-items-center">
+    <button class="btn btn-primary" type="submit" [disabled]="GestionFormAdd.invalid">Ajouter</button>
+  </div>
+  </form>
+</div>
+
+
+</section>
+  <section *ngIf="update">
+    <h2 class="text-center w-100">Ressources à valider</h2>
+    <div class="card mb-3" *ngFor="let ressource of allRessource; let id = index;">
+      <div class="card-header">
+        <div class="d-flex">
+          <div class="col-6 d-flex">
+            <div>
+              <p>Ressource ajouté le : {{ ressource.creationDate }}</p>
+              <p>Nom : {{ ressource.name }}</p>
+            </div>
+          </div>
+          <div class="col-6 flex-column">
+            <p> Créateur {{ allUsers[id] }}</p>
+            <div class="d-flex flex-column flex-lg-row">
+              <button (click)="deleteRessource(ressource.id,id)" class="btn btn-danger mr-2">Suppression</button>
+              <button (click)="validRessource(ressource.id,id)"class="btn btn-success mr-2">Validation</button>
+              <a  [routerLink]="['/Ressource',ressource.id]" class="btn btn-primary">Voir la ressource</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

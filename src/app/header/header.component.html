@@ -1,0 +1,39 @@
+<header role="banner">
+    <img id="logo-main" src="../../assets/images/logo.png" width="200" alt="Logo Thing main logo">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" [routerLink]="['/Accueil']">Ressources Relationnelles</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" [routerLink]="['/Accueil']">Accueil</a>
+            </li>
+            <li class="nav-item dropdown" *ngIf="userPower == true">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Espace Admin
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a *ngIf="user.status != 'MODERATOR'" class="dropdown-item" [routerLink]="['/Admin','Dashboard']" >Dashboard</a>
+                <a *ngIf="user.status != 'MODERATOR'" class="dropdown-item" [routerLink]="['/Admin','Utilisateurs']" >Modération utilisateurs</a>
+                <a class="dropdown-item" [routerLink]="['/Admin','Ressources']">Modération Ressources</a>
+              </div>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="user == undefined" class="nav-link" [routerLink]="['/Login']">Se connecter</a>
+                <a *ngIf="user != undefined"class="nav-link" [routerLink]="['/Profil']">Compte</a>
+            </li>
+            <li class="nav-item" *ngIf="user">
+                <a class="nav-link text-danger" (click)="deconnexion()">Deconnexion</a>
+              </li>
+              <li class="nav-item">
+              <form *ngIf="user != undefined" class="d-flex" [formGroup]="searchForm" (ngSubmit)="searchUser()">
+                <input class="form-control me-2 ml-2" type="text" placeholder="Utilisateur" formControlName="username">
+                <button class="btn btn-outline-success ml-2 bg-success" [disabled]="searchForm.invalid" type="submit">Rechercher</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  </header>

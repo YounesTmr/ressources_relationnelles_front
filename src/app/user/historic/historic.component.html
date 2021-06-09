@@ -1,0 +1,15 @@
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Profil</li>
+      <li class="breadcrumb-item" *ngIf="user != undefined" [routerLink]="['/Profil']">{{ user.username }}</li>
+      <li class="breadcrumb-item" *ngIf="user != undefined">Historique</li>
+    </ol>
+  </nav>
+
+  <section>
+    <div class="card mb-3" *ngFor="let historic of historics; let id = index;">
+      <div class="card-header">
+        Le {{ historic.actionDate }}, ressource <a [routerLink]="['/Ressource/' + historic.resource.id ]">{{ nameOfRessource[id] }}</a> {{action(historic.action)}}
+      </div>
+    </div>
+  </section>

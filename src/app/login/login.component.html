@@ -1,0 +1,78 @@
+<section class="mb-5">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item">Admin</li>
+		  <li class="breadcrumb-item active" aria-current="page">Espace login</li>
+		</ol>
+	  </nav>
+	<section class="mb-5">
+		<div class="card text-center mb-5">
+			<div class="card-header h3">
+			  Se connecter
+			</div>
+			<div class="card-body">
+				<form [formGroup]="connexionForm" (ngSubmit)="checkUser()">
+					<div class="form-group">
+					  <input type="text" class="form-control" placeholder="Username" formControlName="username">
+					</div>
+					<div class="form-group">
+					  <input type="password" class="form-control" placeholder="Mot de passe" formControlName="password">
+					</div>
+					<div class="w-100">
+						<button type="submit" class="btn btn-primary" [disabled]="connexionForm.invalid">Valider</button>
+					</div>
+				</form>
+				  <div class="my-3">
+					<a href=""></a>
+				  </div>
+			</div>
+		  </div>
+	
+	
+		  <div class="card text-center mt-5">
+			<div class="card-header h3">
+			  Création de compte
+			</div>
+			<div class="card-body">
+				<form [formGroup]="creationForm" (ngSubmit)="addUser()">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+						  <span class="input-group-text" id="basic-addon3">Pseudo</span>
+						</div>
+						<input type="text" class="form-control" aria-describedby="basic-addon3" formControlName="username">
+					  </div>
+					<div class="form-group">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+							  <span class="input-group-text" id="basic-addon3">Email</span>
+							</div>
+							<input type="text" class="form-control" aria-describedby="basic-addon3" formControlName="email">
+						  </div>
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+						  <span class="input-group-text" id="basic-addon3">Mot de passe</span>
+						</div>
+						<input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="password">
+					  </div>
+					  <div class="input-group mb-3">
+						<div class="input-group-prepend">
+						  <span class="input-group-text" id="basic-addon3">Confirmation</span>
+						</div>
+						<input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="cpassword">
+					  </div>
+					<div class="w-100">
+						<button type="submit" class="btn btn-primary" [disabled]="creationForm.invalid">Valider</button>
+					</div>
+				  </form>
+			</div>
+			<div class="card-footer text-danger" *ngIf="notGoodPassword == true">
+			  Mot de passe incorrect ou non identique
+			</div>
+		  </div>
+		<div>
+	
+		</div>
+	
+	</section>
+	</section>

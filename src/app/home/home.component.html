@@ -1,0 +1,92 @@
+<section class="my-5 w-100 d-flex flex-column align-items-center justify-content-center">
+<h1>Ressources Relationnelles</h1>
+<p>Merci pour votre visite</p>
+<p>N'hésitez pas a vous inscrire afin de profiter a 100% des fonctionnalitées de notre site !</p>
+<p>Le tutoriel ci-dessous vous expliquera principales fonctionnalités de cette application.</p>
+<button class="btn btn-primary" [routerLink]="['/Tutoriel']">Tutoriel</button>
+</section>
+<div class="card myt-5">
+    <h5 class="card-header">
+        <form [formGroup]="nameSearchForm" (ngSubmit)="searchByName()" class="d-flex flex-column flex-lg-row align-items-center justify-content-center"action="">
+          <div class="input-group mx-2">
+            <span class="input-group-text" id="basic-addon1">Rechercher une ressource</span>
+            <input type="text" class="form-control" placeholder="Nom de la ressource" formControlName="name">
+          </div>
+            <button type="submit" class="btn btn-primary mx-2">Rechercher</button>
+        </form>
+    </h5>
+</div>
+<div>
+  <div class="d-flex " *ngIf="dataSearch">
+    <form [formGroup]="nameSearchForm" (ngSubmit)="goToRessource()" class="d-flex w-100 flex-column flex-lg-row align-items-center justify-content-center">
+    <div class="input-group mb-3 pt-3 mx-2 col-6">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect04">Ressources trouvées</label>
+      </div>
+      <select class="custom-select" id="inputGroupSelect04" formControlName="idRessource">
+          <option *ngFor="let truck of dataSearch; let id = index;" value="{{ truck.id }}">{{ truck.name }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary mx-2">Voir le détail</button>
+  </form>
+  </div>
+</div>
+<section>
+</section>
+<div class="card my-2">
+    <h5 class="card-header">
+        <form [formGroup]="typeRessource" (ngSubmit)="updateTypeChoose()" class="d-flex flex-column flex-lg-row align-items-center justify-content-center"action="">
+            <div class="input-group mb-3 pt-3 mx-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect02">Filtrer par</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect02" formControlName="type" value='{{ typeRessource.value.type }}'>
+                  <option value="FileType">Type de fichier</option>
+                  <option value="RelationshipType">Type de relation</option>
+                  <option value="ResourceType">Type de ressource</option>
+                  <option value="ResourceCategory">Catégorie</option>
+                </select>
+              </div>
+              <div class="input-group mb-3 pt-3 mx-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect03">Trier par</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect03" formControlName="sort" value='{{ typeRessource.value.sort }}'>
+                  <option value="most_viewed">Ressources les plus vues</option>
+                  <option value="latest">Ressources les plus récentes</option>
+                </select>
+              </div>
+            <button type="submit" class="btn btn-primary mx-2">Rechercher</button>
+        </form>
+    </h5>
+  </div>
+
+<section>
+    <div>
+    <div class="card text-center mb-5" *ngFor="let title of nameRessource; let id = index;">
+        <div class="card-header h3">
+            {{ title }}
+        </div>
+        <div class="d-flex flex-wrap">
+        <div class="flex-wrap d-flex flex-column flex-lg-row align-items-center justify-content-between m-3 w-100">
+            <div class="card col-lg-3 col-12 p-0 my-2 mx-3" *ngFor="let singleRessource of allData[title]; let id = index;">
+              <img *ngIf="singleRessource['imageUrl'] == null && singleRessource['fileType']['name'] == 'VIDEO'" class="card-img-top img-fluid" src="../../assets/images/default_movie.png" alt="Card image cap">
+              <img *ngIf="singleRessource['imageUrl'] == null && singleRessource['fileType']['name'] == 'TEXT'" class="card-img-top img-fluid" src="../../assets/images/default_document.png" alt="Card image cap">
+              <img *ngIf="singleRessource['imageUrl'] == null && singleRessource['fileType']['name'] == 'IMAGE'" class="card-img-top img-fluid" src="../../assets/images/default_image.png" alt="Card image cap">
+              <img *ngIf="singleRessource['imageUrl'] == null && singleRessource['fileType']['name'] == 'AUDIO'" class="card-img-top img-fluid" src="../../assets/images/default_sound.png" alt="Card image cap">
+              <img *ngIf="singleRessource['imageUrl'] == null && singleRessource['fileType']['name'] == 'URL'" class="card-img-top img-fluid" src="../../assets/images/default_document.png" alt="Card image cap">
+              <img *ngIf="singleRessource['imageUrl'] != null" class="card-img-top" src="{{ fileLocalUrl + singleRessource['imageUrl'] }}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{ singleRessource['name'] }}</h5>
+                  <p class="card-text">{{ singleRessource['description'] }}</p>
+                  <a  [routerLink]="['/Ressource',singleRessource['id']]" class="btn btn-primary">Voir en détail</a>
+                </div>
+              </div>
+        </div>
+        </div>
+        <div class="card-footer text-muted">
+        <button [routerLink]="['/AllRessource',typeRessource.get('type').value ,title]" type="button" class="btn btn-primary my-3">Voir plus de ressources</button>
+        </div>
+      </div>
+    </div>
+</section>

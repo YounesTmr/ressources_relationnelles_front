@@ -1,0 +1,72 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Admin</li>
+    <li class="breadcrumb-item active" aria-current="page">Gestion Utilisateurs</li>
+  </ol>
+</nav>
+
+<section>
+  <div *ngFor="let user of users; let id=index">
+    <div class="card my-4">
+      <div class="card-body d-flex justify-content-between">
+        <div>
+          <p><span class="text-danger"> Statut : </span>{{ user.status }} Inscrit le : {{ user.dateInscription }}</p>
+          <p>Email : <a href="mailto:{{ user.email }}">{{ user.email}}</a></p>
+          <div class="d-flex">
+            <p class="mr-3">Pseudo : {{ user.username}} <span *ngIf="user.birthDate != null">né(e) le : {{ user.birthDate}}</span></p>
+          </div>
+          <div class="d-flex">
+            <p class="mr-3"> <span *ngIf="user.country != null">Pays : {{ user.country }}, </span><span *ngIf="user.county != null">Département : {{ user.county}}</span></p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div *ngIf="banOrNot(this.user.status)">
+            <div class="form-check form-switch" *ngIf="user.activatedAccount == true">
+                <input (click)="validationCompte(user.id,false, id)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                <label class="form-check-label" for="flexSwitchCheckChecked">compte actif</label>
+            </div>
+            <div class="form-check form-switch" *ngIf="user.activatedAccount == false">
+                <input (click)="validationCompte(user.id, true, id)"class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">compte désactivé</label>
+            </div>
+          </div>
+            <button *ngIf="user.status != 'SUPER_ADMINISTRATOR'" (click)="updateStatus(user.id,id,user.status)" type="button" class="btn btn-warning ml-3" data-toggle="modal" data-target="#changeStatus"><fa-icon [icon]="faWrench"></fa-icon></button>
+            <button *ngIf="user.status != 'SUPER_ADMINISTRATOR'" (click)="deleteUser(user.id, id)" type="button" class="btn btn-danger ml-3"><fa-icon [icon]="faTrash"></fa-icon></button>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="changeStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title font-weight-bold" id="exampleModalLabel">Modifier le statut</h3>
+          <button (click)="resetDroitToChange()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="userForm" (ngSubmit)="updateStatusChoose()">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect02">Statut</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect02" formControlName="status" value='{{ userForm.value.status }}' *ngIf="UserConnecte != undefined">
+                      <option selected>Choisir...</option>
+                      <option value="MEMBER">Membre</option>
+                      <option value="MODERATOR">Modérateur</option>
+                      <option value="ADMINISTRATOR">Administrateur</option>
+                      <option *ngIf="UserConnecte.status == 'SUPER_ADMINISTRATOR'" value="SUPER_ADMINISTRATOR">Super Administrateur</option>
+                    </select>
+                  </div>
+        <div class="modal-footer">
+          <button (click)="resetDroitToChange()" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Modifier</button>
+        </div>
+        </form>
+    </div>
+      </div>
+    </div>
+  </div>

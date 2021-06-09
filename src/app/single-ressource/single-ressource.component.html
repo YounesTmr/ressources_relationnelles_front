@@ -1,0 +1,152 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Ressource</li>
+      <li class="breadcrumb-item" *ngIf="ressource != undefined">{{ ressource.name }}</li>
+    </ol>
+  </nav>
+
+  <section class="" *ngIf="ressource != undefined">
+      <h2 class="text-center my-5">{{ ressource.name }}</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-between">
+          <li>Créée le {{ ressource.creationDate }}</li>
+          <li class="d-flex">Nombre de vues : {{ ressource.nbViews }} / Langue : {{ ressource.language['name'] }}</li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-between">
+          <li class="d-flex flex-column flex-lg-row align-items-center justify-content-center w-100">
+            <span class="mx-2 my-2" *ngIf="user != undefined && userPower">
+              <button type="button" (click)="ressourceGoDraw()"
+              class="d-flex btn btn-danger px-4 py-2">Remettre en brouillon<fa-icon class="ml-2" [icon]="faPencilRuler">
+              </fa-icon></button>
+            </span>
+            <span class="mx-2 my-2" *ngIf="user != undefined">
+              <button type="button" (click)="goToFavoryOrComplete('favorite')"
+              class="d-flex btn btn-success px-4 py-2">Ajouter liste Favoris<fa-icon class="ml-2" [icon]="faHeart">
+              </fa-icon></button>
+            </span>
+            <span class="mx-2 my-2" *ngIf="user != undefined">
+              <button type="button" (click)="goToFavoryOrComplete('complete')"
+              class="d-flex btn btn-success px-4 py-2">Ajouter liste Completées<fa-icon class="ml-2" [icon]="faHourglassEnd">
+              </fa-icon></button>
+            </span>
+            <span class="mx-2 my-2" *ngIf="user != undefined">
+              <button type="button" class="d-flex btn btn-success px-4 py-2" data-toggle="modal" data-target="#addRessourceTofriend">Partager la ressource</button>
+            </span>
+          </li>
+        </ol>
+      </nav>
+      <div class="card py-5 my-2" >
+          <div *ngIf="ressource.fileType['name']  == 'VIDEO'">
+            <div style="text-align:center">
+              <video controls="" class="w-100 h-100">
+                <source src="{{ fileLocalUrl + ressource.fileName}}" type="video/mp4">
+                <p>Votre navigateur ne prend pas en charge les vidéos HTML5.Voici <a href="{{ fileLocalUrl + ressource.fileName}}">un lien pour télécharger la vidéo</a>.</p>
+             </video>
+              </div>
+
+          </div>
+          <div *ngIf="ressource.fileType['name'] == 'IMAGE'" class='d-flex flex-align-center justify-content-center'>
+              <img class="py-5" src="{{ fileLocalUrl + ressource.fileName}}" alt="image" class="img-fluid">
+          </div>
+          <div *ngIf="ressource.fileType['name'] == 'AUDIO'" class='d-flex flex-align-center justify-content-center'>
+            <audio preload="auto" controls="controls" type="audio/mpeg">
+              <source type="audio/mp3" src="{{ fileLocalUrl + ressource.fileName}}">
+              <source type="audio/ogg" src="{{ fileLocalUrl + ressource.fileName}}">
+              Votre navigateur ne supporte pas la vidéo HTML5
+            </audio>
+          </div>
+          <div *ngIf="ressource.fileType['name'] == 'TEXT'" class='d-flex flex-align-center justify-content-center'>
+            <a class="text-center py-5" href="{{ fileLocalUrl + ressource.fileName }}">Cliquer ici</a>
+          </div>
+          <div *ngIf="ressource.fileType['name'] == 'URL'" class='d-flex flex-align-center justify-content-center'>
+              <a class="text-center py-5 w-100" href="#">Cliquer ici</a>
+          </div>
+      </div>
+      <div class="text-center py-5 card"> Description :
+        {{ ressource.description }}
+      </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-between">
+          <li>Type de relation : {{ ressource.relationshipType['name'] }}</li>
+          <li>Catégorie : {{ ressource.resourceCategory['name'] }}</li>
+        </ol>
+      </nav>
+
+      <section class="card my-5" *ngIf="comments != undefined">
+        <h4 class="text-center my-3">Commentaires</h4>
+          <div class="" *ngFor="let comment of comments">
+            <hr>
+            <div class="d-flex justify-content-start py-2 mx-4">
+                <div class="second py-2 px-2 w-100">
+                    <div class="d-flex justify-content-between py-1 pt-2 w-100">
+                      <p class="font-weight-bold">Membre : {{ comment.member.username }}</p>
+                      <p>Le {{ comment.dateOfComment }} </p>
+                      <button *ngIf="user.status != 'MEMBER'" (click)="deleteComent(comment.id)" type="button" class="btn btn-danger ml-3"><fa-icon [icon]="faTrash"></fa-icon></button>
+                    </div>
+                    <p>{{ comment.commentBodyText }}</p>
+                </div>
+            </div>
+          </div>
+      </section>
+      <section class="card my-5 p-3" *ngIf="user != undefined">
+        <form [formGroup]="formComment" (ngSubmit)="addComment()">
+          <div class="input-group">
+            <span class="input-group-text">Message</span>
+            <textarea class="form-control" aria-label="With textarea" formControlName="body"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="formComment.invalid">Soumettre</button>
+          </div>
+        </form>
+
+      </section>
+
+
+  </section>
+
+
+
+
+  <div class="modal fade" id="addRessourceTofriend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" *ngIf="user != undefined">
+    <div class="col-md-4 mb-3">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title font-weight-bold text-center" id="exampleModalLabel">Sélectionner le groupe ou le membre à qui partager</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="ressourceForFriendForm" (ngSubmit)="addRessourceToFriend()">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect">Groupe</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect" formControlName="group">
+                    <option value="SOI">Soi</option>
+                    <option value="FAMILLE">Famille</option>
+                    <option value="PROFESSIONNELS">Professionnels</option>
+                    <option value="CONJOINTS">Conjoints</option>
+                    <option value="INCONNUS">Inconnus</option>
+                    <option value="AMIS">Amis</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="usernameInput">Pseudo du membre</label>
+                <input type="text" class="form-control" id="usernameInput" placeholder="Pseudo" formControlName="username">
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary" [disabled]="ressourceForFriendForm.invalid">Partager</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

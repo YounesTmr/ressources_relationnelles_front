@@ -1,0 +1,141 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin</li>
+      <li class="breadcrumb-item active" aria-current="page">Statistiques</li>
+    </ol>
+</nav>
+
+<div class="card text-center mb-5">
+  <h5 class="card-header">Ressources</h5>
+
+  <div class="d-flex flex-row justify-content-around">
+    <div class="card m-2 p-2">
+      <h6 class="class-header">Nombre de ressources total</h6>
+      <p class="h2 font-weight-bold" >{{nbResources}}</p>
+    </div>
+    <div class="card m-2 p-2">
+      <h6 class="class-header">Nombre de vues total</h6>
+      <p class="h2 font-weight-bold">{{nbViews}}</p>
+    </div>
+  </div>
+
+  <div class="card flex-wrap d-flex flex-row  m-2 justify-content-around">
+
+    <google-chart #chart
+      [title]="titleTypeResource"
+      [type]="typeDonut"
+      [data]="dataTypeResource"
+      [options]="optionsDonut"
+      [width]="widthDonut"
+      [height]="heightDonut">
+    </google-chart>
+
+    <google-chart #chart
+      [title]="titleCategoryResource"
+      [type]="typeDonut"
+      [data]="dataCategoryResource"
+      [options]="optionsDonut"
+      [width]="widthDonut"
+      [height]="heightDonut">
+    </google-chart>
+
+    <google-chart #chart
+      [title]="titleFileType"
+      [type]="typeDonut"
+      [data]="dataFileType"
+      [options]="optionsDonut"
+      [width]="widthDonut"
+      [height]="heightDonut">
+    </google-chart>
+
+    <google-chart #chart
+      [title]="titleRelationshipType"
+      [type]="typeDonut"
+      [data]="dataRelationshipType"
+      [options]="optionsDonut"
+      [width]="widthDonut"
+      [height]="heightDonut">
+    </google-chart>
+  </div>
+
+  <div class="card flex-wrap d-flex flex-row  m-2 justify-content-around">
+
+    <google-chart #chart
+      [title]="titleShares"
+      [type]="typeColumns"
+      [data]="dataShares"
+      [options]="optionsColumns"
+      [width]="widthColumns"
+      [height]="heightColumns">
+      [columnNames]="columnNamesShares">
+    </google-chart>
+
+    <google-chart #chart
+      [title]="titleViews"
+      [type]="typeColumns"
+      [data]="dataViews"
+      [options]="optionsColumns"
+      [width]="widthColumns"
+      [height]="heightColumns">
+      [columnNames]="columnNamesViews">
+    </google-chart>
+  </div>
+
+
+</div>
+
+<div class="card text-center mb-5">
+  <h5 class="card-header">Membres</h5>
+
+  <div class="d-flex flex-row justify-content-around">
+    <div>
+      <div class="card m-2 p-2">
+        <h6 class="class-header">Nombre de membres total</h6>
+        <p class="h2 font-weight-bold" >{{nbMembers}}</p>
+    </div>
+  </div>
+    <google-chart #chart
+      [title]="titleStatus"
+      [type]="typeDonut"
+      [data]="dataStatus"
+      [options]="optionsDonut"
+      [width]="widthDonut"
+      [height]="heightDonut">
+    </google-chart>
+  </div>
+
+  <div class="card flex-wrap d-flex flex-row  m-2 justify-content-around">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Département</th>
+          <th scope="col">Nb de membres</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataCountiesItem of dataCounties; let id = index;">
+          <th scope="row">{{id+1}}</th>
+          <td>{{ dataCountiesItem.name }}</td>
+          <td>{{ dataCountiesItem.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <google-chart #chart
+      [title]="titleAges"
+      [type]="typeColumns"
+      [data]="dataAges"
+      [options]="optionsColumns"
+      [width]="800"
+      [height]="heightColumns">
+      [columnNames]="columnNamesAges">
+    </google-chart>
+
+  </div>
+
+
+
+
+</div>

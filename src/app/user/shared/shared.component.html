@@ -1,0 +1,31 @@
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Profil</li>
+      <li class="breadcrumb-item" *ngIf="user != undefined" [routerLink]="['/Profil']">{{ user.username }}</li>
+      <li class="breadcrumb-item" *ngIf="user != undefined">Shared</li>
+      <li class="breadcrumb-item" *ngIf="userFriend != undefined" [routerLink]="['/Profil/' + userFriend.username ]" >{{ userFriend.username }}</li>
+    </ol>
+  </nav>
+<section>
+    <div class="flex-wrap d-flex flex-column flex-lg-row align-items-center justify-content-between m-3 w-100">
+        <div class="card col-lg-3 col-12 p-0 my-2 mx-3" *ngFor="let singleRessource of ressoruces; let id = index;">
+            <img *ngIf="singleRessource['imageUrl'] == null" class="card-img-top img-fluid" src="../../assets/images/image-defaut.png" alt="Card image cap">
+            <img *ngIf="singleRessource['imageUrl'] != null" class="card-img-top" src="{{ singleRessource['imageUrl'] }}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{ singleRessource['name'] }}</h5>
+              <p class="card-text">{{ singleRessource['description'] }}</p>
+              <div>
+                <p>Type de ressource : {{ singleRessource['resourceType']['name'] }}</p>
+                <p>Type de fichier : {{ singleRessource['fileType']['name'] }}  
+                    <fa-icon *ngIf="singleRessource['fileType']['name'] == 'VIDEO'" [icon]="faVideo"></fa-icon>
+                    <fa-icon *ngIf="singleRessource['fileType']['name'] == 'TEXT'"[icon]="faFileAlt"></fa-icon>
+                    <fa-icon *ngIf="singleRessource['fileType']['name'] == 'IMAGE'"[icon]="faImage"></fa-icon>
+                    <fa-icon *ngIf="singleRessource['fileType']['name'] == 'AUDIO'"[icon]="faVolumeUp"></fa-icon>
+                    <fa-icon *ngIf="singleRessource['fileType']['name'] == 'URL'"[icon]="faPoop"></fa-icon>
+                </p>
+              </div>
+              <a  [routerLink]="['/Ressource',singleRessource['id']]" class="btn btn-primary">Voir plus</a>
+            </div>
+          </div>
+    </div>
+</section>

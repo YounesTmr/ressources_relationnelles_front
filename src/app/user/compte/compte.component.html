@@ -1,0 +1,304 @@
+<div class="container">
+    <div class="main-body">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Profil</li>
+        <li class="breadcrumb-item" *ngIf="user != undefined">{{ user.username }}</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm" *ngIf="user != undefined">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
+                width="150">
+              <div class="mt-3">
+                <h4>{{ user.username }}</h4>
+                <p class="text-muted font-size-sm">{{ user.status }}</p>
+                <h3 *ngIf="statsFriend != undefined" >Statistiques</h3>
+                <p *ngIf="statsFriend != undefined" class="text-left mt-3">Nombre d'amis : {{ statsFriend.total }}</p>
+                <p *ngIf="statsComple != undefined"class="text-left">Nombre de ressources completées : {{ statsComple.total }}</p>
+                <p *ngIf="statsFavorite != undefined"class="text-left">Nombre de ressources en favori : {{ statsFavorite.total }}</p>
+                <p *ngIf="statsRessource != undefined"class="text-left">Nombre de ressource créées : {{ statsRessource.total }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Pseudo</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.username }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.email }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Date de Naissance</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.birthDate }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Pays</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.country }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Département</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.county }}
+              </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="PresentationUser == true && addFormVisibility == true">
+              <div class="col-sm-5">
+                <button type="button" data-toggle="modal" data-target="#addFriend"
+                  class="d-flex btn btn-success px-4 py-2">Ajouter à ma liste d'amis<fa-icon class="ml-2" [icon]="faUserAlt">
+                  </fa-icon></button>
+              </div>
+            </div>
+            <div class="row" *ngIf="PresentationUser == false">
+              <div class="col-sm-2">
+                <button type="button" data-toggle="modal" data-target="#changeUser"
+                  class="d-flex btn btn-warning px-2 py-1">Modifier<fa-icon class="ml-1" [icon]="faWrench"></fa-icon></button>
+              </div>
+              <div class="col-sm-10 text-secondary">
+                <button class="mr-2 mb-2 btn btn-success" type="button" [routerLink]="['/Profil','Complete']">Res. complétées</button>
+                <button class="mr-2 mb-2  btn btn-success" type="button" [routerLink]="['/Profil','Favoris']">Res. favories</button>
+                <button class="mr-2 mb-2  btn btn-success" type="button" [routerLink]="['/Profil','Amis']">Liste d'amis</button>
+                <button class="mr-2 mb-2  btn btn-success" type="button"
+                  [routerLink]="['/Profil','Historique']">Historique</button>
+                <button class="mr-2  mb-2 btn btn-success" type="button" [routerLink]="['/Profil','CreationRessource']">Mes
+                  Ressources</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="changeUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" *ngIf="user != undefined && PresentationUser == false">
+  <div class="col-md-4 mb-3">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title font-weight-bold" id="exampleModalLabel">Modifier son profil</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="userForm" (ngSubmit)="updateUser()">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Mot de passe</span>
+              </div>
+              <input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="password">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Confirmation</span>
+              </div>
+              <input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="cpassword">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Date de naissance</span>
+              </div>
+              <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="JJ/MM/AAAA" formControlName="birthDate">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect02">Pays</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect02" formControlName="country" value='{{ userForm.get("country").value }}'>
+                <option selected value="FRANCE">France</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect03">Département</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect03" formControlName="county" value='{{ userForm.get("county").value}}'>
+                <option value="AIN">01 - AIN</option>
+                <option value="AISNE">02 - AISNE</option>
+                <option value="ALLIER">03 - ALLIER</option>
+                <option value="ALPES_DE_HAUTE_PROVENCE">04 - ALPES-DE-HAUTE-PROVENCE</option>
+                <option value="HAUTES_ALPES">05 - HAUTES-ALPES</option>
+                <option value="ALPES_MARITIMES">06 - ALPES-MARITIMES</option>
+                <option value="ARDECHE">07 - ARDÈCHE</option>
+                <option value="ARDENNES">08 - ARDENNES</option>
+                <option value="ARIEGE">09 - ARIÈGE</option>
+                <option value="AUBE">10 - AUBE</option>
+                <option value="AUDE">11 - AUDE</option>
+                <option value="AVEYRON">12 - AVEYRON</option>
+                <option value="BOUCHES_DU_RHONE">13 - BOUCHES-DU-RHÔNE</option>
+                <option value="CALVADOS">14 - CALVADOS</option>
+                <option value="CANTAL">15 - CANTAL</option>
+                <option value="CHARENTE">16 - CHARENTE</option>
+                <option value="CHARENTE_MARITIME">17 - CHARENTE-MARITIME</option>
+                <option value="CHER">18 - CHER</option>
+                <option value="CORREZE">19 - CORRÈZE</option>
+                <option value="CORSE_DU_SUD">2A - CORSE-DU-SUD</option>
+                <option value="HAUTE_CORSE">2B - HAUTE-CORSE</option>
+                <option value="COTE_D_OR">21 - CÔTE-D'OR</option>
+                <option value="COTES_D_ARMOR">22 - CÔTES D'ARMOR</option>
+                <option value="CREUSE">23 - CREUSE</option>
+                <option value="DORDOGNE">24 - DORDOGNE</option>
+                <option value="DOUBS">25 - DOUBS</option>
+                <option value="DROME">26 - DRÔME</option>
+                <option value="EURE">27 - EURE</option>
+                <option value="EURE_ET_LOIR">28 - EURE-ET-LOIR</option>
+                <option value="FINISTERE">29 - FINISTÈRE</option>
+                <option value="GARD">30 - GARD</option>
+                <option value="HAUTE_GARONNE">31 - HAUTE-GARONNE</option>
+                <option value="GERS">32 - GERS</option>
+                <option value="GIRONDE">33 - GIRONDE</option>
+                <option value="HERAULT">34 - HÉRAULT</option>
+                <option value="ILLE_ET_VILAINE">35 - ILLE-ET-VILAINE</option>
+                <option value="INDRE">36 - INDRE</option>
+                <option value="INDRE_ET_LOIRE">37 - INDRE-ET-LOIRE</option>
+                <option value="ISERE">38 - ISÈRE</option>
+                <option value="JURA">39 - JURA</option>
+                <option value="LANDES">40 - LANDES</option>
+                <option value="LOIR_ET_CHER">41 - LOIR-ET-CHER</option>
+                <option value="LOIRE">42 - LOIRE</option>
+                <option value="HAUTE_LOIRE">43 - HAUTE-LOIRE</option>
+                <option value="LOIRE_ATLANTIQUE">44 - LOIRE-ATLANTIQUE</option>
+                <option value="LOIRET">45 - LOIRET</option>
+                <option value="LOT">46 - LOT</option>
+                <option value="LOT_ET_GARONNE">47 - LOT-ET-GARONNE</option>
+                <option value="LOZERE">48 - LOZÈRE</option>
+                <option value="MAINE_ET_LOIRE">49 - MAINE-ET-LOIRE</option>
+                <option value="MANCHE">50 - MANCHE</option>
+                <option value="MARNE">51 - MARNE</option>
+                <option value="HAUTE_MARNE">52 - HAUTE-MARNE</option>
+                <option value="MAYENNE">53 - MAYENNE</option>
+                <option value="MEURTHE_ET_MOSELLE">54 - MEURTHE-ET-MOSELLE</option>
+                <option value="MEUSE">55 - MEUSE</option>
+                <option value="MORBIHAN">56 - MORBIHAN</option>
+                <option value="MOSELLE">57 - MOSELLE</option>
+                <option value="NIÈVRE">58 - NIÈVRE</option>
+                <option value="NORD">59 - NORD</option>
+                <option value="OISE">60 - OISE</option>
+                <option value="ORNE">61 - ORNE</option>
+                <option value="PAS_DE_CALAIS">62 - PAS-DE-CALAIS</option>
+                <option value="PUY_DE_DÔME">63 - PUY-DE-DÔME</option>
+                <option value="PYRENEES_ATLANTIQUES">64 - PYRÉNÉES-ATLANTIQUES</option>
+                <option value="HAUTES_PYRENEES">65 - HAUTES-PYRÉNÉES</option>
+                <option value="PYRENEES_ORIENTALES">66 - PYRÉNÉES-ORIENTALES</option>
+                <option value="BAS_RHIN">67 - BAS-RHIN</option>
+                <option value="HAUT_RHIN">68 - HAUT-RHIN</option>
+                <option value="RHONE">69 - RHÔNE</option>
+                <option value="HAUTE_SAONE">70 - HAUTE-SAÔNE</option>
+                <option value="SAONE_ET_LOIRE">71 - SAÔNE-ET-LOIRE</option>
+                <option value="SARTHE">72 - SARTHE</option>
+                <option value="SAVOIE">73 - SAVOIE</option>
+                <option value="HAUTE_SAVOIE">74 - HAUTE-SAVOIE</option>
+                <option value="PARIS">75 - PARIS</option>
+                <option value="SEINE_MARITIME">76 - SEINE-MARITIME</option>
+                <option value="SEINE_ET_MARNE">77 - SEINE-ET-MARNE</option>
+                <option value="YVELINES">78 - YVELINES</option>
+                <option value="DEUX_SEVRES">79 - DEUX-SÈVRES</option>
+                <option value="SOMME">80 - SOMME</option>
+                <option value="TARN">81 - TARN</option>
+                <option value="TARN_ET_GARONNE">82 - TARN-ET-GARONNE</option>
+                <option value="VAR">83 - VAR</option>
+                <option value="VAUCLUSE">84 - VAUCLUSE</option>
+                <option value="VENDEE">85 - VENDÉE</option>
+                <option value="VIENNE">86 - VIENNE</option>
+                <option value="HAUTE_VIENNE">87 - HAUTE-VIENNE</option>
+                <option value="VOSGES">88 - VOSGES</option>
+                <option value="YONNE">89 - YONNE</option>
+                <option value="TERRITOIRE_DE_BELFORT">90 - TERRITOIRE DE BELFORT</option>
+                <option value="ESSONNE">91 - ESSONNE</option>
+                <option value="HAUTS_DE_SEINE">92 - HAUTS-DE-SEINE</option>
+                <option value="SEINE_ST_DENIS">93 - SEINE-SAINT-DENIS</option>
+                <option value="VAL_DE_MARNE">94 - VAL-DE-MARNE</option>
+                <option value="VAL_D_OISE">95 - VAL-D'OISE</option>
+                <option value="GUADELOUPE ">971 - GUADELOUPE</option>
+                <option value="MARTINIQUE">972 - MARTINIQUE</option>
+                <option value="GUYANE">973 - GUYANE</option>
+                <option value="LA_REUNIONADMINISTRATOR">974 - LA RÉUNION</option>
+                <option value="MAYOTTE">976 - MAYOTTE</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Valider les modifications</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="addFriend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" *ngIf="user != undefined && PresentationUser == true">
+    <div class="col-md-4 mb-3">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title font-weight-bold" id="exampleModalLabel">Ajouter à quel groupe ?</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="friendForm" (ngSubmit)="addFriendUser()">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect">Type de relation</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect" formControlName="group">
+                    <option value="SOI">Soi</option>
+                    <option value="FAMILLE">Famille</option>
+                    <option value="PROFESSIONNELS">Professionnels</option>
+                    <option value="CONJOINTS">Conjoints</option>
+                    <option value="INCONNUS">Inconnus</option>
+                    <option value="AMIS">Amis</option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary" [disabled]="friendForm.invalid">Ajouter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
