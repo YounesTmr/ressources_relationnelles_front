@@ -203,31 +203,68 @@ export class RessourceService {
    */
   addRessource(type,resource,file,image){
 
-    var postOrDraft;
+    try{
+      const img = image.name.split('.').pop();
+      const fil = file.name.split('.').pop();
+      if(resource.fileType === "IMAGE"){
+        if(fil !== "jpeg" && fil !== "png" && fil !== "jpg" && fil !== "gif" && fil !== "img"){
+          throw "file error"
+        }
+        if(img !== "jpeg" && img !== "png" && img !== "jpg" && img !== "img"){
+          throw "image couverture error"
+        }
+      }else if(resource.fileType === "TEXT"){
+        if(fil !== "txt" && fil !== "pdf" && fil !== "odt" && fil !== "docx" && fil !== "doc"){
+          throw "file error"
+        }
+        if(img !== "jpeg" && img !== "png" && img !== "jpg" && img !== "img"){
+          throw "image couverture error"
+        }
+      }else if(resource.fileType === "VIDEO"){
+        if(fil !== "mov" && fil !== "mp4" && fil !== "avi" && fil !== "flv" && fil !== "wmf"){
+          throw "file error"
+        }
+        if(img !== "jpeg" && img !== "png" && img !== "jpg" && img !== "img"){
+          throw "image couverture error"
+        }
+      }else if(resource.fileType === "AUDIO"){
+        if(fil !== "mp3" && fil !== "flac"){
+          throw "file error"
+        }
+        if(img !== "jpeg" && img !== "png" && img !== "jpg" && img !== "img"){
+          throw "image couverture error"
+        }
+      }
+      throw "test";
+      var postOrDraft;
 
-    if(type == true){
-      postOrDraft = "/resource/createInDraft";
-    }else{
-      postOrDraft = "/resource/createToPost";
+      if(type == true){
+        postOrDraft = "/resource/createInDraft";
+      }else{
+        postOrDraft = "/resource/createToPost";
+      }
+
+      const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')};
+
+      let formDate = new FormData();
+
+      formDate.append('file', file);
+
+      formDate.append('image', image);
+
+      const json = JSON.stringify(resource);
+
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
+
+      formDate.append('register',blob);
+
+      return this.httpClient.post<any>(environment.apiUrl + postOrDraft, formDate,{'headers':headers} );
+    }catch(err){
+      alert(`error : ${err}`);
     }
-
-    const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')};
-
-    let formDate = new FormData();
-
-    formDate.append('file', file);
-
-    formDate.append('image', image);
-
-    const json = JSON.stringify(resource);
-
-    const blob = new Blob([json], {
-      type: "application/json",
-    });
-
-    formDate.append('register',blob);
-
-    return this.httpClient.post<any>(environment.apiUrl + postOrDraft, formDate,{'headers':headers} );
+    
   }
       /**
    *

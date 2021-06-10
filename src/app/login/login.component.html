@@ -17,7 +17,9 @@
 					</div>
 					<div class="form-group">
 					  <input type="password" class="form-control" placeholder="Mot de passe" formControlName="password">
+					  <span class="error" id="errorMdpId"></span>
 					</div>
+
 					<div class="w-100">
 						<button type="submit" class="btn btn-primary" [disabled]="connexionForm.invalid">Valider</button>
 					</div>
@@ -39,27 +41,31 @@
 						<div class="input-group-prepend">
 						  <span class="input-group-text" id="basic-addon3">Pseudo</span>
 						</div>
-						<input type="text" class="form-control" aria-describedby="basic-addon3" formControlName="username">
+						<input name="pseudo" type="text" class="form-control" aria-describedby="basic-addon3" minlength="5" formControlName="username" (change)="validatePseudo()">
+						<span class="error" id="errorPseudo"></span>
 					  </div>
 					<div class="form-group">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 							  <span class="input-group-text" id="basic-addon3">Email</span>
 							</div>
-							<input type="text" class="form-control" aria-describedby="basic-addon3" formControlName="email">
+							<input name="mail" type="email" class="form-control" aria-describedby="basic-addon3" formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" (change)="validateMail()">
+							<span class="error" id="errorMail"></span>
 						  </div>
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 						  <span class="input-group-text" id="basic-addon3">Mot de passe</span>
 						</div>
-						<input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="password">
-					  </div>
+						<input name="password" type="password" class="form-control" aria-describedby="basic-addon3" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" (change)="validatePassword()" formControlName="password">
+						<span class="error" id="errorPassword"></span>
+					</div>
 					  <div class="input-group mb-3">
 						<div class="input-group-prepend">
 						  <span class="input-group-text" id="basic-addon3">Confirmation</span>
 						</div>
-						<input type="password" class="form-control" aria-describedby="basic-addon3" formControlName="cpassword">
+						<input name="confirmation" type="password" class="form-control" aria-describedby="basic-addon3" (change)="validateConfirmation()" formControlName="cpassword">
+						<span class="error" id="errorConfirmation"></span>
 					  </div>
 					<div class="w-100">
 						<button type="submit" class="btn btn-primary" [disabled]="creationForm.invalid">Valider</button>
